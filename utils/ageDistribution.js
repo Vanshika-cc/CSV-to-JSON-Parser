@@ -1,6 +1,8 @@
 const { pool } = require('../config/database');
 
-
+/**
+ * Calculate and display age distribution of users
+ */
 async function calculateAgeDistribution() {
   try {
     const query = `
@@ -35,21 +37,26 @@ async function calculateAgeDistribution() {
     const totalResult = await pool.query(totalQuery);
     const total = parseInt(totalResult.rows[0].total);
 
-    console.log('\n' + '='.repeat(50));
+    // Print formatted report
+    console.log('\n' + '='.repeat(54));
     console.log('AGE DISTRIBUTION REPORT');
-    console.log('='.repeat(50));
-    console.log('Age-Group\t\t% Distribution');
-    console.log('-'.repeat(50));
+    console.log('='.repeat(54));
+    console.log('Age-Group'.padEnd(30) + '% Distribution');
+    console.log('-'.repeat(54));
 
     result.rows.forEach((row) => {
       const percentage = ((row.count / total) * 100).toFixed(2);
-      console.log(`${row.age_group}\t\t\t${percentage}%`);
+      console.log(row.age_group.padEnd(30) + `${percentage}%`);
     });
 
-    console.log('='.repeat(50));
+    console.log('='.repeat(54));
     console.log(`Total Users: ${total}\n`);
 
-    return result.rows;
+    return result.rows.map((row) => ({
+      age_group: row.age_group,
+      count: parseInt(row.count),
+      percentage: ((row.count / total) * 100).toFixed(2) + '%'
+    }));
   } catch (error) {
     console.error('Error calculating age distribution:', error);
     throw error;

@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const { initializeDatabase } = require('./config/database');
 const { parseCSV } = require('./utils/csvParser');
-const { insertUsers, clearUsers } = require('./services/userService');
+const { insertUsers, clearUsers, getAllUsers } = require('./services/userService');
 const { calculateAgeDistribution } = require('./utils/ageDistribution');
 
 const app = express();
@@ -31,28 +31,43 @@ app.get('/', (req, res) => {
  */
 app.get('/process-csv', async (req, res) => {
   try {
-    console.log('\n Starting CSV processing...\n');
 
     const csvFilePath = process.env.CSV_FILE_PATH;
 
     // Step 1: Parse CSV
-    console.log('Reading CSV file...');
+    
     const users = await parseCSV(csvFilePath);
-    console.log(`Parsed ${users.length} records\n`);
 
     // Step 2: Clear existing data
-    console.log('Clearing existing data...');
     await clearUsers();
     console.log('');
 
     // Step 3: Insert into database
-    console.log('Inserting users into database...');
     const insertedCount = await insertUsers(users);
     console.log('');
 
-    // Step 4: Calculate age distribution
+    // Step 4: Get all inserted users from database
+    const insertedUsers = await getAllUsers();
+    console.log('');
+
+    // Step 5: Calculate age distribution
     console.log('Calculating age distribution...');
     const ageDistribution = await calculateAgeDistribution();
+
+    // Step 6: Format response with firstName and lastName
+    const formattedRecords = insertedUsers.map(user => {
+      const [firstName, ...lastNameParts] = user.name.split(' ');
+      return {
+        id: user.id,
+        name: {
+          firstName: firstName,
+          lastName: lastNameParts.join(' ')
+        },
+        age: user.age,
+        address: user.address,
+        additional_info: user.additional_info
+      };
+    });
 
     res.json({
       success: true,
@@ -60,6 +75,7 @@ app.get('/process-csv', async (req, res) => {
       data: {
         totalRecords: users.length,
         insertedRecords: insertedCount,
+        records: formattedRecords, // Added this
         ageDistribution: ageDistribution,
       },
     });

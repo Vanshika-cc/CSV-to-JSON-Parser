@@ -12,9 +12,9 @@ console.log('Attempting connection...');
 
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
-    console.error('❌ Connection failed:', err.message);
+    console.error('Connection failed:', err.message);
   } else {
-    console.log('✅ Connection successful!');
+    console.log('Connection successful!');
     console.log('Current time from database:', res.rows[0].now);
   }
   pool.end();

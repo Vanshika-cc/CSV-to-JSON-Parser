@@ -1,6 +1,8 @@
 const { pool } = require('../config/database');
 
-
+/**
+ * Insert users into database in batches
+ */
 async function insertUsers(users) {
   const BATCH_SIZE = 1000;
   let insertedCount = 0;
@@ -64,11 +66,30 @@ async function insertUsers(users) {
 async function clearUsers() {
   try {
     await pool.query('TRUNCATE TABLE users RESTART IDENTITY');
-    console.log('Cleared all users from database');
   } catch (error) {
     console.error('Error clearing users:', error);
     throw error;
   }
 }
 
-module.exports = { insertUsers, clearUsers };
+/**
+ * Get all users from database
+ */
+async function getAllUsers() {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, age, address, additional_info FROM users ORDER BY id'
+    );
+    console.log(`Fetched ${result.rows.length} users from database`);
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+}
+
+module.exports = { 
+  insertUsers, 
+  clearUsers,
+  getAllUsers  // Added this export
+};

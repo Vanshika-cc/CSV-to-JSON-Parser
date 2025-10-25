@@ -11,11 +11,11 @@ const pool = new Pool({
 
 // Test connection
 pool.on('connect', () => {
-  console.log('✅ Connected to PostgreSQL database');
+  console.log('Connected to PostgreSQL database');
 });
 
 pool.on('error', (err) => {
-  console.error('❌ Unexpected database error:', err);
+  console.error('Unexpected database error:', err);
   process.exit(-1);
 });
 
@@ -33,9 +33,9 @@ const createTableQuery = `
 const initializeDatabase = async () => {
   try {
     await pool.query(createTableQuery);
-    console.log('✅ Users table ready');
+    console.log('Users table ready');
   } catch (error) {
-    console.error('❌ Error creating table:', error);
+    console.error('Error creating table:', error);
     throw error;
   }
 };
