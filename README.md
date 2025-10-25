@@ -18,23 +18,18 @@ A simple Node.js application that reads CSV files, converts them to JSON, and st
 
 - **Backend:** Node.js, Express.js  
 - **Database:** PostgreSQL  
-- **CSV Parsing:** csv-parser  
-- **DB Connection:** pg (Node.js PostgreSQL client)
 
 ---
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (v16+ recommended)  
-- PostgreSQL (v12+ recommended)  
-- npm or yarn  
 
 ### Setup
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/csv-to-postgresql.git
+git clone https://github.com/Vanshika-cc/CSV-to-JSON-Parser
 cd csv-to-postgresql
+### Setup
+
+1. Clone the repository:
