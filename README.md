@@ -115,8 +115,9 @@ After processing a CSV file, the data is converted and stored in PostgreSQL as n
 <img width="839" height="846" alt="Screenshot 2025-10-26 014124" src="https://github.com/user-attachments/assets/f8753bd7-f8c0-4ad9-9d01-0f1106038061" />
 ## Users table in PostgreSQL showing all records with JSONB columns
 <img width="1522" height="469" alt="Screenshot 2025-10-26 022958" src="https://github.com/user-attachments/assets/3990be6b-9e0e-4b05-802e-648f48beb1b9" />
-*Expanded view of address JSONB object showing nested structure*
-<img width="774" height="455" alt="Screenshot 2025-10-26 023102" src="https://github.com/user-attachments/assets/fd99ca87-4c17-4f67-a8e4-100be34f8b4c" />
+<img width="777" height="271" alt="image" src="https://github.com/user-attachments/assets/98b0666f-75c6-47a6-81e4-11bc4315a94c" />
+Expanded view of address JSONB object showing nested structure
+
 
 ## Age Distribution Report
 <img width="656" height="319" alt="Screenshot 2025-10-26 015640" src="https://github.com/user-attachments/assets/14ef2e3b-c02d-4a34-9cd8-b0c2115118ee" />
