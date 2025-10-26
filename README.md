@@ -47,11 +47,16 @@ const pool = new Pool({
   port: 5432,
 });
 ```
-4. Run the server:
+4. A utility script is included to generate large test datasets(50,000 in this code):
+
 ```bash
-npm start
+node generateCSV.js
 ```
-5. Access the endpoints:
+5. Run the server:
+```bash
+npm run dev
+```
+6. Access the endpoints:
 
 - Health check: GET http://localhost:3000/health
 - Process CSV: GET http://localhost:3000/process-csv
@@ -121,7 +126,40 @@ Expanded view of address JSONB object showing nested structure
 
 
 ## Age Distribution Report
-<img width="656" height="319" alt="Screenshot 2025-10-26 015640" src="https://github.com/user-attachments/assets/14ef2e3b-c02d-4a34-9cd8-b0c2115118ee" />
+<img width="613" height="308" alt="image" src="https://github.com/user-attachments/assets/f9cb1c4c-c374-406e-9fb2-eae3785efa9a" />
+
+Verification the data in PostgreSQL using pgAdmin:
+```sql
+SELECT 
+  CASE 
+    WHEN age < 20 THEN '< 20'
+    WHEN age >= 20 AND age <= 40 THEN '20 to 40'
+    WHEN age > 40 AND age <= 60 THEN '40 to 60'
+    ELSE '> 60'
+  END as age_group,
+  COUNT(*) as count,
+  ROUND((COUNT(*)::float / (SELECT COUNT(*) FROM users)) * 100) as percentage
+FROM users
+GROUP BY age_group
+ORDER BY 
+  CASE 
+    WHEN age < 20 THEN 1
+    WHEN age >= 20 AND age <= 40 THEN 2
+    WHEN age > 40 AND age <= 60 THEN 3
+    ELSE 4
+  END;
+```
+
+**Query Result:**
+<img width="488" height="328" alt="image" src="https://github.com/user-attachments/assets/a3f10229-7d8b-4cff-84fc-c132538042b4" />
+
+## Testing
+
+The application has been tested with:
+- 50,000 user records
+- Batch processing (1000 records per batch)
+- Nested properties with dot notation
+- Age distribution analytics
 
 ## Assumptions
 
