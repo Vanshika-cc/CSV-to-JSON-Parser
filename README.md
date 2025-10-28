@@ -112,71 +112,11 @@ csv-parser-challenge/
 ├── .env                     # Environment variables
 └── package.json             # Dependencies
 ```
-## JSON Output
-
-After processing a CSV file, the data is converted and stored in PostgreSQL as nested JSON. 
-### API Response
-<img width="410" height="384" alt="Screenshot 2025-10-26 003641" src="https://github.com/user-attachments/assets/d236d1b5-95e1-4eee-a3c5-8d1a5694262b" />
-<img width="839" height="846" alt="Screenshot 2025-10-26 014124" src="https://github.com/user-attachments/assets/f8753bd7-f8c0-4ad9-9d01-0f1106038061" />
 
 ## Users table in PostgreSQL showing all records with JSONB columns
 <img width="1522" height="469" alt="Screenshot 2025-10-26 022958" src="https://github.com/user-attachments/assets/3990be6b-9e0e-4b05-802e-648f48beb1b9" />
-<img width="777" height="271" alt="image" src="https://github.com/user-attachments/assets/98b0666f-75c6-47a6-81e4-11bc4315a94c" />
-Expanded view of address JSONB object showing nested structure
 
 
 ## Age Distribution Report
 <img width="613" height="308" alt="image" src="https://github.com/user-attachments/assets/f9cb1c4c-c374-406e-9fb2-eae3785efa9a" />
 
-Verification the data in PostgreSQL using pgAdmin:
-```sql
-SELECT 
-  CASE 
-    WHEN age < 20 THEN '< 20'
-    WHEN age >= 20 AND age <= 40 THEN '20 to 40'
-    WHEN age > 40 AND age <= 60 THEN '40 to 60'
-    ELSE '> 60'
-  END as age_group,
-  COUNT(*) as count,
-  ROUND((COUNT(*)::float / (SELECT COUNT(*) FROM users)) * 100) as percentage
-FROM users
-GROUP BY age_group
-ORDER BY 
-  CASE 
-    WHEN age < 20 THEN 1
-    WHEN age >= 20 AND age <= 40 THEN 2
-    WHEN age > 40 AND age <= 60 THEN 3
-    ELSE 4
-  END;
-```
-
-**Query Result:**
-<img width="488" height="328" alt="image" src="https://github.com/user-attachments/assets/a3f10229-7d8b-4cff-84fc-c132538042b4" />
-
-## Testing
-
-The application has been tested with:
-- 50,000 user records
-- Batch processing (1000 records per batch)
-- Nested properties with dot notation
-- Age distribution analytics
-
-## Assumptions
-
-- CSV files are UTF-8 encoded
-- First line always contains headers
-- Nested properties of the same object are placed adjacently
-- Age values are valid integers
-
-  ## Future Enhancements
-
-- File upload via API
-- Data validation middleware
-- Multiple CSV file processing
-- Export data to JSON/CSV
-- Real-time progress tracking
-- Unit tests
-
-## Author
-
-Vanshika Chachlani
